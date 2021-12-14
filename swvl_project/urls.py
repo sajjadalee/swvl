@@ -21,9 +21,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path(r'', GroupNotifyView.as_view(), name = 'notify'),
-    path('api/token/', obtain_auth_token, name='obtain_token')
-
+    path('api/token/', obtain_auth_token, name='obtain_token'),
+    path('chat/', include('chatroom.urls')),
 ]
+
+
 
 handler404='utils.views.error_404'
 handler500='utils.views.error_500'

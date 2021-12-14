@@ -22,18 +22,34 @@ class GroupNotifyView(APIView):
     def get(self, request, *args, **kwargs):
         # try:
         result = {}
+        final = {}
+        # import pdb
+        # pdb.set_trace()
         try:
-            total = notify.objects.values('group_id_id__message', 'group_id_id__is_executed', 'group_id_id__uuid').filter(
-                group_id_id__uuid=request.data["uuid"]).annotate(total_count=Count('id'))
+            total = notify.objects.values('group_id_id__message', 'is_sent', 'group_id_id__uuid').filter(
+                group_id_id__uuid= request.data["uuid"]).annotate(total_count=Count('id'))
+            # import pdb
+            # pdb.set_trace()
+            # print(f"here is the new value {total}")
 
         except KeyError:
             raise Http404
+        final_key=""
         if total:
             for item in total:
                 for key,value in item.items():
                     dict = {str(key).replace('group_id_id__','') : value}
                     result.update(dict)
-        serializer = CustomeSerializer(result)
+
+                if result["is_sent"] == True:
+                    final_key = "Sent"
+                else:
+                    final_key = "Not Sent"
+                new_dict = {final_key : result}
+                final.update(new_dict)
+        else:
+            raise Http404
+        serializer = CustomeSerializer(final)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):

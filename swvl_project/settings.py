@@ -23,14 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ezj*@qwwm5#*+1ml^2svkoi7m5(r=721(*ess&vco*_hjle*+%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1','0.0.0.0']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
     'notifications',
     'django_celery_beat',
     'django.contrib.humanize',
-
+    'chatroom',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +76,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'swvl_project.wsgi.application'
+ASGI_APPLICATION = 'swvl_project.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 
 # Database

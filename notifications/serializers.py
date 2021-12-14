@@ -9,7 +9,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class CustomeSerializer(serializers.Serializer):
     uuid = serializers.UUIDField()
     total_count = serializers.IntegerField()
-    is_executed= serializers.BooleanField()
+    is_sent= serializers.BooleanField()
     # successful = serializers.IntegerField()
     # failed = serializers.IntegerField()
     message = serializers.CharField()
